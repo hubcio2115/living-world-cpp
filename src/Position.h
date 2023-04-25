@@ -1,24 +1,28 @@
 #pragma once
-#include <string>
 
-using namespace std;
+#include <string>
 
 class Position {
 private:
-	int x;
-	int y;
+    int x;
+    int y;
 
 public:
-	Position(int x, int y);
-	Position() : x(0), y(0) {}
+    Position(int x, int y);
 
-	int getX();
-	void setX(int x);
-	int getY();
-	void setY(int y);
+    Position() : x(0), y(0) {}
 
-	string toString();
+    [[nodiscard]] int getX() const;
 
-	double distance(Position position);
-	void move(int dx, int dy);
+    void setX(int x);
+
+    [[nodiscard]] int getY() const;
+
+    void setY(int y);
+
+    [[nodiscard]] std::string toString() const;
+
+    [[nodiscard]] double distance(Position position) const;
+
+    void move(int dx, int dy);
 };

@@ -4,40 +4,47 @@
 #include <ctime>
 #include "Organism.h"
 
-using namespace std;
 
-class World
-{
+class World {
 private:
-	int worldX;
-	int worldY;
-	int turn = 0;
-	vector<Organism> organisms;
-	char separator = '.';
+    int worldX;
+    int worldY;
+    int turn = 0;
+    std::vector<Organism*> organisms;
+    char separator = '.';
 
-	string getOrganismFromPosition(int x, int y);
-	bool isPositionOnWorld(int x, int y);
-	bool isPositionFree(Position position);
+    std::string getOrganismFromPosition(int x, int y);
+
+    [[nodiscard]] bool isPositionOnWorld(int x, int y) const;
+
+    bool isPositionFree(Position position);
 
 public:
-	World(int worldX, int worldY);
-	World() : World(6, 6) {};
+    World(int worldX, int worldY);
 
-	int getWorldX();
-	void setWorldX(int worldX);
-	int getWorldY();
-	void setWorldY(int worldY);
+    World() : World(6, 6) {};
 
-	int getTurn();
-	
-	void addOrganism(Organism *organism);
-	vector<Position> getVectorOfFreePositionsAround(Position position);
-	void makeTurn();
+    ~World();
 
-	void writeWorld(string fileName);
-	void readWorld(string fileName);
-	
-	string toString();
+    [[nodiscard]] int getWorldX() const;
 
+    void setWorldX(int worldX);
+
+    [[nodiscard]] int getWorldY() const;
+
+    void setWorldY(int worldY);
+
+    [[nodiscard]] int getTurn() const;
+
+    void addOrganism(Organism *organism);
+
+    std::vector<Position> getVectorOfFreePositionsAround(Position position);
+
+    void makeTurn();
+
+    void writeWorld(const std::string& fileName);
+
+    void readWorld(const std::string& fileName);
+
+    std::string toString();
 };
-

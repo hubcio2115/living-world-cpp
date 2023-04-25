@@ -1,28 +1,31 @@
 #pragma once
+
 #include <string>
 #include "Position.h"
 
-using namespace std;
-
-class Organism
-{
+class Organism {
 private:
-	int power;
-	Position position;
-	string species;
+    int power;
+    Position position;
+    std::string species;
 public:
-	Organism(int power, Position position);
-	Organism() : power(0), position(0, 0), species("O") {};
+    Organism(int power, Position position);
 
-	int getPower();
-	void setPower(int power);
-	Position getPosition();
-	void setPosition(Position position);
-	string getSpecies();
-	void setSpecies(string spec);
+    Organism() : power(0), position(0, 0), species("O") {};
 
-	string toString();
+    [[nodiscard]] int getPower() const;
 
-	virtual void move(int dx, int dy);
+    void setPower(int newPower);
 
+    [[nodiscard]] Position getPosition() const;
+
+    void setPosition(Position newPosition);
+
+    [[nodiscard]] std::string getSpecies() const;
+
+    void setSpecies(std::string spec);
+
+    [[nodiscard]] std::string toString() const;
+
+    void move(int dx, int dy);
 };

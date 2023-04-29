@@ -1,13 +1,12 @@
 #include "Position.h"
+#include <math.h>
 
-Position::Position(int newX, int newY) {
-    setX(newX);
-    setY(newY);
+Position::Position(int x, int y) {
+    setX(x);
+    setY(y);
 }
 
-int Position::getX() const {
-    return this->x;
-}
+int Position::getX() const { return this->x; }
 
 void Position::setX(int newX) {
     if (x >= 0)
@@ -16,9 +15,7 @@ void Position::setX(int newX) {
         this->x = 0;
 }
 
-int Position::getY() const {
-    return this->y;
-}
+int Position::getY() const { return this->y; }
 
 void Position::setY(int newY) {
     if (y >= 0)

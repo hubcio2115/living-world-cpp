@@ -15,6 +15,15 @@ add_executable(01_living_world_hubcio2115
         src/Organism.cpp
         src/plants/Plant.cpp
         src/animals/Animal.cpp
+        src/plants/Dandelion.h
+        src/plants/Grass.h
+        src/animals/Sheep.h
+        src/animals/Wolf.h
+        src/animals/Wolf.cpp
+        src/animals/Sheep.cpp
+        src/plants/Dandelion.cpp
+        src/plants/Grass.cpp
+        src/plants/Toadstool.cpp
         )
 
 target_link_libraries(01_living_world_hubcio2115 PRIVATE nlohmann_json::nlohmann_json)

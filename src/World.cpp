@@ -91,7 +91,7 @@ void World::writeWorld(const std::string &fileName) {
                      {"turn",      this->getTurn()},
                      {"organisms", json::array()}};
 
-        for (auto organism: this->organisms) data["organisms"].emplace(organism->serialize());
+        for (auto organism: this->organisms) data["organisms"].push_back(organism->serialize());
 
         my_json << data.dump(4) << std::endl;
         my_json.close();
@@ -111,7 +111,7 @@ void World::readWorld(const std::string &fileName) {
         this->setOrganisms(std::vector<Organism *>());
 
         for (const auto &organism: data.at("organisms")) {
-            Organism* newOrganism = Organism::deserialize(organism);
+            Organism* newOrganism = Organism::deserialize(&organism);
             this->addOrganism(newOrganism);
         }
     }

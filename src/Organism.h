@@ -2,7 +2,6 @@
 
 #include "utils/OrganismInitParams.h"
 #include "Position.h"
-#include "World.h"
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -16,12 +15,11 @@ private:
     int liveLength;
     int powerToReproduce;
     std::string species;
-    World *world;
 
 protected:
-    Organism(const OrganismInitParams &organism, Position position, World *world);
+    Organism(const OrganismInitParams &organism, Position position);
 
-    explicit Organism(Organism *organism);
+    explicit Organism(const Organism *organism);
 
 public:
     virtual ~Organism() = default;
@@ -50,9 +48,7 @@ public:
 
     void setSpecies(const std::string &spec);
 
-    void setWorld(World *world);
-
-    [[nodiscard]] virtual std::string toString() const;
+    [[nodiscard]] virtual std::string toString();
 
     virtual void move(int dx, int dy);
 
@@ -62,7 +58,7 @@ public:
 
     [[nodiscard]] virtual json serialize() const;
 
-    static Organism *deserialize(const json *organism, World *world);
+    static Organism *deserialize(const json *organism);
 
     [[nodiscard]] static Organism *createOrganism(char species, Position position);
 };

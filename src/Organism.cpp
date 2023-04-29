@@ -5,24 +5,22 @@
 #include "plants/Dandelion.h"
 #include "plants/Toadstool.h"
 
-Organism::Organism(const OrganismInitParams &organism, Position position, World *world) {
+Organism::Organism(const OrganismInitParams &organism, Position position) {
     this->setPower(organism.power);
     this->setInitiative(organism.initiative);
     this->setPosition(position);
     this->setLiveLength(organism.liveLength);
     this->setPowerToReproduce(organism.powerToReproduce);
     this->setSpecies(organism.species);
-    this->setWorld(world);
 }
 
-Organism::Organism(Organism *organism) {
+Organism::Organism(const Organism *organism) {
     this->setPower(organism->getPower());
     this->setInitiative(organism->getInitiative());
     this->setPosition(organism->getPosition());
     this->setLiveLength(organism->getLiveLength());
     this->setPowerToReproduce(organism->getPowerToReproduce());
     this->setSpecies(organism->getSpecies());
-    this->setWorld(organism->world);
 }
 
 int Organism::getPower() const { return this->power; }
@@ -57,11 +55,7 @@ std::string Organism::getSpecies() const { return this->species; }
 
 void Organism::setSpecies(const std::string &spec) { this->species = spec; }
 
-void Organism::setWorld(World *newWorld) {
-    this->world = newWorld;
-}
-
-std::string Organism::toString() const {
+std::string Organism::toString() {
     return to_string(this->serialize());
 }
 
@@ -87,7 +81,7 @@ json Organism::serialize() const {
     };
 }
 
-Organism *Organism::deserialize(const json *organism, World *world) {
+Organism *Organism::deserialize(const json *organism) {
     std::string species = to_string(organism->at("species"));
     const char *cstr = species.c_str();
     char buffer[2];
@@ -100,7 +94,6 @@ Organism *Organism::deserialize(const json *organism, World *world) {
     newOrganism->setInitiative(organism->at("initiative"));
     newOrganism->setLiveLength(organism->at("liveLength"));
     newOrganism->setPowerToReproduce(organism->at("powerToReproduce"));
-    newOrganism->setWorld(world);
 
     return newOrganism;
 }
@@ -125,7 +118,6 @@ Organism *Organism::createOrganism(const char species, Position position) {
             break;
         default:
             throw std::runtime_error("No animal ha provided species signature!");
-            break;
     }
 
     return newOrganism;

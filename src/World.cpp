@@ -14,7 +14,8 @@ bool World::isPositionOnWorld(int x, int y) const {
 }
 
 bool World::isPositionFree(Position position) {
-    return this->getOrganismFromPosition(position.getX(), position.getY()).empty();
+    return this->getOrganismFromPosition(position.getX(), position.getY())
+            .empty();
 }
 
 std::vector<Position> World::getVectorOfFreePositionsAround(Position position) {
@@ -22,8 +23,7 @@ std::vector<Position> World::getVectorOfFreePositionsAround(Position position) {
     std::vector<Position> result;
     for (int x = -1; x < 2; ++x)
         for (int y = -1; y < 2; ++y)
-            if ((x != 0 || y != 0) &&
-                this->isPositionOnWorld(pos_x + x, pos_y + y))
+            if ((x != 0 || y != 0) && this->isPositionOnWorld(pos_x + x, pos_y + y))
                 result.emplace_back(pos_x + x, pos_y + y);
 
     auto iter = remove_if(result.begin(), result.end(),
@@ -33,34 +33,27 @@ std::vector<Position> World::getVectorOfFreePositionsAround(Position position) {
     return result;
 }
 
-World::World(int newWorldX, int newWorldY) {
-    setWorldX(newWorldX);
-    setWorldY(newWorldY);
+World::World(const int worldX, const int worldY) {
+    this->setWorldX(worldX);
+    this->setWorldY(worldY);
 }
 
-World::~World() {
-    for (auto organism: this->organisms)
-        delete organism;
-}
+int World::getWorldX() const { return this->worldX; }
 
-int World::getWorldX() const {
-    return this->worldX;
-}
+void World::setWorldX(const int newWorldX) { this->worldX = newWorldX; }
 
-void World::setWorldX(int newWorldX) {
-    this->worldX = newWorldX;
-}
+int World::getWorldY() const { return this->worldY; }
 
-int World::getWorldY() const {
-    return this->worldY;
-}
+void World::setWorldY(const int newWorldY) { this->worldY = newWorldY; }
 
-void World::setWorldY(int newWorldY) {
-    this->worldY = newWorldY;
-}
+int World::getTurn() const { return this->turn; }
 
-int World::getTurn() const {
-    return this->turn;
+void World::setTurn(int newTurn) { this->turn = newTurn; }
+
+void World::setOrganisms(std::vector<Organism *> newOrganisms) {
+    for (auto organism : this->organisms) delete organism;
+
+    this->organisms = std::move(newOrganisms);
 }
 
 void World::addOrganism(Organism *organism) {

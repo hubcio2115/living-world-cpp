@@ -10,7 +10,7 @@ private:
     int worldX;
     int worldY;
     int turn = 0;
-    std::vector<Organism*> organisms;
+    std::vector<Organism *> organisms;
     char separator = '.';
 
     std::string getOrganismFromPosition(int x, int y);
@@ -24,17 +24,19 @@ public:
 
     World() : World(6, 6) {};
 
-    ~World();
-
     [[nodiscard]] int getWorldX() const;
 
-    void setWorldX(int worldX);
+    void setWorldX(int newWorldX);
 
     [[nodiscard]] int getWorldY() const;
 
-    void setWorldY(int worldY);
+    void setWorldY(int newWorldY);
 
     [[nodiscard]] int getTurn() const;
+
+    void setTurn(int newTurn);
+
+    void setOrganisms(std::vector<Organism *> newOrganisms);
 
     void addOrganism(Organism *organism);
 
@@ -42,9 +44,9 @@ public:
 
     void makeTurn();
 
-    void writeWorld(const std::string& fileName);
+    void writeWorld(const std::string &fileName);
 
-    void readWorld(const std::string& fileName);
+    void readWorld(const std::string &fileName);
 
     std::string toString();
 };

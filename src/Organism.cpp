@@ -1,4 +1,9 @@
 #include "Organism.h"
+#include "./animals/Wolf.h"
+#include "./animals/Sheep.h"
+#include "plants/Grass.h"
+#include "plants/Dandelion.h"
+#include "plants/Toadstool.h"
 
 Organism::Organism(const OrganismInitParams &organism, Position position, World *world) {
     this->setPower(organism.power);
@@ -57,9 +62,7 @@ void Organism::setWorld(World *newWorld) {
 }
 
 std::string Organism::toString() const {
-    return "{ species: " + this->getSpecies() +
-           ", power: " + std::to_string(getPower()) +
-           ", position: " + getPosition().toString() + "}";
+    return to_string(this->serialize());
 }
 
 void Organism::move(const int dx, const int dy) { this->getPosition().move(dx, dy); }
@@ -70,10 +73,60 @@ bool Organism::isReproducible() const {
     return this->power >= this->powerToReproduce;
 }
 
-std::string Organism::getSpecies() const {
-    return this->species;
+json Organism::serialize() const {
+    return json{
+            {"power",            this->getPower()},
+            {"initiative",       this->getInitiative()},
+            {"liveLength",       this->getLiveLength()},
+            {"powerToReproduce", this->getPowerToReproduce()},
+            {"species",          this->getSpecies()},
+            {"position",         {
+                                         {"posX", this->getPosition().getX()},
+                                         {"posY", this->getPosition().getY()},
+                                 }},
+    };
 }
 
-void Organism::setSpecies(std::string spec) {
-    this->species = std::move(spec);
+Organism *Organism::deserialize(const json *organism, World *world) {
+    std::string species = to_string(organism->at("species"));
+    const char *cstr = species.c_str();
+    char buffer[2];
+    std::strcpy(buffer, cstr);
+
+    Position position(organism->at("position").at("posX"), organism->at("position").at("posY"));
+    Organism *newOrganism = createOrganism(buffer[0], position);
+
+    newOrganism->setPower(organism->at("power"));
+    newOrganism->setInitiative(organism->at("initiative"));
+    newOrganism->setLiveLength(organism->at("liveLength"));
+    newOrganism->setPowerToReproduce(organism->at("powerToReproduce"));
+    newOrganism->setWorld(world);
+
+    return newOrganism;
+}
+
+Organism *Organism::createOrganism(const char species, Position position) {
+    Organism *newOrganism;
+    switch (species) {
+        case 'W':
+            newOrganism = new Wolf(position);
+            break;
+        case 'S':
+            newOrganism = new Sheep(position);
+            break;
+        case 'G':
+            newOrganism = new Grass(position);
+            break;
+        case 'T':
+            newOrganism = new Toadstool(position);
+            break;
+        case 'D':
+            newOrganism = new Dandelion(position);
+            break;
+        default:
+            throw std::runtime_error("No animal ha provided species signature!");
+            break;
+    }
+
+    return newOrganism;
 }

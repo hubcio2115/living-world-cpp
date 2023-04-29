@@ -1,6 +1,10 @@
 #include "World.h"
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <random>
+#include <utility>
+
+using json = nlohmann::json;
 
 std::string World::getOrganismFromPosition(int x, int y) {
     for (auto org: this->organisms)
@@ -80,85 +84,36 @@ void World::makeTurn() {
 }
 
 void World::writeWorld(const std::string &fileName) {
-    std::fstream my_file;
-    my_file.open(fileName, std::ios::out | std::ios::binary);
-    if (my_file.is_open()) {
-        my_file.write((char *) &this->worldX, sizeof(int));
-        my_file.write((char *) &this->worldY, sizeof(int));
-        my_file.write((char *) &this->turn, sizeof(int));
+    std::ofstream my_json(fileName);
+    if (my_json.is_open()) {
+        json data = {{"worldX",    this->getWorldX()},
+                     {"worldY",    this->getWorldY()},
+                     {"turn",      this->getTurn()},
+                     {"organisms", json::array()}};
 
-        int organisms_size = (int) this->organisms.size();
-        my_file.write((char *) &organisms_size, sizeof(int));
-        for (int i = 0; i < organisms_size; i++) {
-            int data;
-            data = this->organisms[i]->getPower();
-            my_file.write((char *) &data, sizeof(int));
+        for (auto organism: this->organisms) data["organisms"].emplace(organism->serialize());
 
-            data = this->organisms[i]->getPosition().getX();
-            my_file.write((char *) &data, sizeof(int));
-
-            data = this->organisms[i]->getPosition().getY();
-            my_file.write((char *) &data, sizeof(int));
-
-            std::string s_data = this->organisms[i]->getSpecies();
-            int s_size = (int) s_data.size();
-
-            my_file.write((char *) &s_size, sizeof(int));
-            my_file.write(s_data.data(), (int) s_data.size());
-        }
-
-        my_file.close();
+        my_json << data.dump(4) << std::endl;
+        my_json.close();
     }
 }
 
 void World::readWorld(const std::string &fileName) {
-    std::fstream my_file;
-    my_file.open(fileName, std::ios::in | std::ios::binary);
+    std::ifstream my_json(fileName);
+    json data;
+    my_json >> data;
+    my_json.close();
 
-    if (my_file.is_open()) {
-        int result;
-        my_file.read((char *) &result, sizeof(int));
-        this->worldX = (int) result;
+    if (my_json.is_open()) {
+        this->setWorldX(data.at("worldX"));
+        this->setWorldY(data.at("worldY"));
+        this->setTurn(data.at("turn"));
+        this->setOrganisms(std::vector<Organism *>());
 
-        my_file.read((char *) &result, sizeof(int));
-        this->worldY = (int) result;
-
-        my_file.read((char *) &result, sizeof(int));
-        this->turn = (int) result;
-
-        my_file.read((char *) &result, sizeof(int));
-        int organisms_size = (int) result;
-
-        std::vector<Organism *> new_organisms;
-        for (int i = 0; i < organisms_size; i++) {
-            int power;
-            my_file.read((char *) &result, sizeof(int));
-            power = (int) result;
-
-            int pos_x;
-            my_file.read((char *) &result, sizeof(int));
-            pos_x = (int) result;
-
-            int pos_y;
-            my_file.read((char *) &result, sizeof(int));
-            pos_y = (int) result;
-
-            Position pos(pos_x, pos_y);
-
-            int s_size;
-            my_file.read((char *) &result, sizeof(int));
-            s_size = (int) result;
-
-            std::string species;
-            species.resize(s_size);
-            my_file.read((char *) &species[0], s_size);
-
-            auto organism = new Organism(power, pos);
-            organism->setSpecies(species);
-            new_organisms.push_back(organism);
+        for (const auto &organism: data.at("organisms")) {
+            Organism* newOrganism = Organism::deserialize(organism);
+            this->addOrganism(newOrganism);
         }
-        this->organisms = new_organisms;
-        my_file.close();
     }
 }
 

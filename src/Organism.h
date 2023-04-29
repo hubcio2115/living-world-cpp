@@ -2,7 +2,11 @@
 
 #include "utils/OrganismInitParams.h"
 #include "Position.h"
+#include "World.h"
+#include <nlohmann/json.hpp>
 #include <string>
+
+using json = nlohmann::json;
 
 class Organism {
 private:
@@ -56,7 +60,9 @@ public:
 
     [[nodiscard]] virtual bool isReproducible() const;
 
-    [[nodiscard]] std::string toString() const;
+    [[nodiscard]] virtual json serialize() const;
 
-    void move(int dx, int dy);
+    static Organism *deserialize(const json *organism, World *world);
+
+    [[nodiscard]] static Organism *createOrganism(char species, Position position);
 };

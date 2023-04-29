@@ -76,14 +76,14 @@ int main() {
     world.makeTurn();
     std::cout << world.toString() << std::endl;
 
-//  world.writeWorld("world.bin");
+    world.writeWorld("world.json");
 
     // Tura 3
     world.makeTurn();
     std::cout << world.toString() << std::endl;
 
     // powrot do Tury 2
-//  world.readWorld("world.bin");
+//    world.readWorld("world.bin");
 //    std::cout << world.toString() << std::endl;
 
     return 0;

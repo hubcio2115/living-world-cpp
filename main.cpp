@@ -31,39 +31,42 @@ int main() {
     // std::cout << org1.toString() << std::endl;
 
     // Plant & Animal
-    Grass grass(p3);
-    Sheep sheep(p2);
+    auto *grass = new Grass(p3, nullptr);
+    auto *sheep = new Sheep(p2, nullptr);
 
-    std::cout << grass.toString() << std::endl;
-    std::cout << sheep.toString() << std::endl;
+    std::cout << grass->toString() << std::endl;
+    std::cout << sheep->toString() << std::endl;
 
-    grass.move(3, 4);
-    std::cout << grass.toString() << std::endl;
+    grass->move(3, 4);
+    std::cout << grass->toString() << std::endl;
 
-    sheep.move(1, 2);
-    std::cout << sheep.toString() << std::endl;
+    sheep->move(1, 2);
+    std::cout << sheep->toString() << std::endl;
+
+    delete grass;
+    delete sheep;
 
     // World test
     World world(6, 6);
     Position posP1(4, 5);
-    Grass grassW1(posP1);
+    Grass grassW1(posP1, &world);
     Position posP2(5, 4);
-    Dandelion dandelionW2(posP2);
+    Dandelion dandelionW2(posP2, &world);
 
     Position posW2(3, 2);
-    Sheep sheepW1(posW2);
+    Sheep sheepW1(posW2, &world);
     Position posW3(2, 3);
-    Sheep sheepW2(posW3);
+    Sheep sheepW2(posW3, &world);
 
     world.addOrganism(&grassW1);
-    world.addOrganism(&grassW1);
-    world.addOrganism(&sheepW2);
+    world.addOrganism(&dandelionW2);
+    world.addOrganism(&sheepW1);
     world.addOrganism(&sheepW2);
 
-    std::vector<Position> positions = world.getVectorOfFreePositionsAround(Position(5, 5));
+    auto positions = world.getVectorOfFreePositionsAround(Position(5, 5));
 
-    for (Position pos: positions)
-        std::cout << pos.toString() << std::endl;
+    for (auto position : positions)
+        std::cout << position.toString() << std::endl;
 
     // Tura 0
     std::cout << world.toString() << std::endl;

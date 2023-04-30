@@ -5,7 +5,7 @@
 
 class Toadstool : public Plant {
 public:
-    explicit Toadstool(Position position);
+    explicit Toadstool(Position position, World *world);
 };
 
 #endif // INC_01_LIVING_WORLD_HUBCIO2115_TOADSTOOL_H

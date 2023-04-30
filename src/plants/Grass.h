@@ -9,7 +9,7 @@
 
 class Grass : public Plant {
 public:
-    explicit Grass(Position position);
+    explicit Grass(Position position, World *world);
 };
 
 #endif // INC_01_LIVING_WORLD_HUBCIO2115_GRASS_H

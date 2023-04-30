@@ -3,4 +3,4 @@
 //
 #include "Dandelion.h"
 
-Dandelion::Dandelion(Position position) : Plant(OrganismInitParams{0, 0, 6, 2, "D"}, position) {}
+Dandelion::Dandelion(Position position, World *world) : Plant(OrganismInitParams{0, 0, 6, 2, "D"}, position, world) {}

@@ -4,5 +4,5 @@
 
 class Animal : public Organism {
 protected:
-    Animal(const OrganismInitParams &organism, Position position);
+    Animal(const OrganismInitParams &organism, Position position, World *world);
 };

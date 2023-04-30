@@ -9,7 +9,7 @@ Position::Position(int x, int y) {
 int Position::getX() const { return this->x; }
 
 void Position::setX(int newX) {
-    if (x >= 0)
+    if (newX >= 0)
         this->x = newX;
     else
         this->x = 0;
@@ -18,14 +18,14 @@ void Position::setX(int newX) {
 int Position::getY() const { return this->y; }
 
 void Position::setY(int newY) {
-    if (y >= 0)
+    if (newY >= 0)
         this->y = newY;
     else
         this->y = 0;
 }
 
 std::string Position::toString() const {
-    return "(" + std::to_string(getX()) + ", " + std::to_string(getY()) + ")";
+    return "(" + std::to_string(this->getX()) + ", " + std::to_string(this->getY()) + ")";
 }
 
 double Position::distance(Position position) const {
@@ -35,6 +35,6 @@ double Position::distance(Position position) const {
 }
 
 void Position::move(int dx, int dy) {
-    setX(getX() + dx);
-    setY(getY() + dy);
+    this->setX(this->getX() + dx);
+    this->setY(this->getY() + dy);
 }

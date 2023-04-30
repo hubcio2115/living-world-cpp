@@ -77,14 +77,29 @@ void World::makeTurn() {
     std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<int> dist(100);
 
-    for (auto org: this->organisms) {
-        newPositions = getVectorOfFreePositionsAround(org->getPosition());
+    for (auto organism: this->organisms) {
+        auto currentPosition = organism->getPosition();
+        newPositions = getVectorOfFreePositionsAround(currentPosition);
+
         numberOfNewPositions = (int) newPositions.size();
         if (numberOfNewPositions > 0) {
-            randomIndex = dist(rng) % numberOfNewPositions;
-            org->setPosition(newPositions[randomIndex]);
+            bool wasMoveMade = false;
+            while (!wasMoveMade) {
+                randomIndex = dist(rng) % numberOfNewPositions;
+                int deltaX = currentPosition.getX() - newPositions[randomIndex].getX();
+                int deltaY = currentPosition.getY() - newPositions[randomIndex].getY();
+
+                bool isMoveValid = currentPosition.getX() + deltaX <= this->getWorldX() &&
+                                   currentPosition.getY() + deltaY <= this->getWorldY();
+
+                if (isMoveValid) {
+                    organism->move(deltaX, deltaY);
+                    wasMoveMade = true;
+                }
+            }
         }
     }
+
     this->turn++;
 }
 

@@ -4,7 +4,6 @@
 #include <ctime>
 #include "Organism.h"
 
-
 class World {
 private:
     int worldX;

@@ -17,7 +17,7 @@ private:
     int liveLength;
     int powerToReproduce;
     std::string species;
-    World* world;
+    World *world;
 
 protected:
     Organism(const OrganismInitParams &organism, Position position, World *world);

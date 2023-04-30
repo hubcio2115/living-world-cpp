@@ -9,7 +9,7 @@
 
 class Sheep : public Animal {
 public:
-    explicit Sheep(Position position, World* world);
+    explicit Sheep(Position position, World *world);
 };
 
 #endif // INC_01_LIVING_WORLD_HUBCIO2115_SHEEP_H

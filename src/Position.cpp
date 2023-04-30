@@ -1,5 +1,5 @@
 #include "Position.h"
-#include <math.h>
+#include <cmath>
 
 Position::Position(int x, int y) {
     setX(x);

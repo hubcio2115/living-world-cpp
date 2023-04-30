@@ -5,7 +5,7 @@
 #include "plants/Dandelion.h"
 #include "plants/Toadstool.h"
 
-Organism::Organism(const OrganismInitParams &organism, Position position, World* world) {
+Organism::Organism(const OrganismInitParams &organism, Position position, World *world) {
     this->setPower(organism.power);
     this->setInitiative(organism.initiative);
     this->setPosition(position);
@@ -84,13 +84,13 @@ json Organism::serialize() const {
 }
 
 Organism *Organism::deserialize(const json *organism, World *world) {
-    std::string species = to_string(organism->at("species"));
+    std::string species = organism->at("species");
     const char *cstr = species.c_str();
     char buffer[2];
     std::strcpy(buffer, cstr);
 
     Position position(organism->at("position").at("posX"), organism->at("position").at("posY"));
-    Organism *newOrganism = createOrganism(buffer[0], position, world);
+    Organism *newOrganism = Organism::createOrganism(buffer[0], position, world);
 
     newOrganism->setPower(organism->at("power"));
     newOrganism->setInitiative(organism->at("initiative"));

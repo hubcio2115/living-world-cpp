@@ -43,7 +43,7 @@ World::World(const int worldX, const int worldY) {
 }
 
 World::~World() {
-    for (auto organism : this->organisms)
+    for (auto organism: this->organisms)
         delete organism;
 }
 
@@ -60,7 +60,7 @@ int World::getTurn() const { return this->turn; }
 void World::setTurn(int newTurn) { this->turn = newTurn; }
 
 void World::setOrganisms(std::vector<Organism *> newOrganisms) {
-    for (auto organism : this->organisms) delete organism;
+    for (auto organism: this->organisms) delete organism;
 
     this->organisms = std::move(newOrganisms);
 }
@@ -105,20 +105,20 @@ void World::writeWorld(const std::string &fileName) {
 
 void World::readWorld(const std::string &fileName) {
     std::ifstream my_json(fileName);
-    json data;
-    my_json >> data;
-    my_json.close();
 
     if (my_json.is_open()) {
+        json data;
+        my_json >> data;
         this->setWorldX(data.at("worldX"));
         this->setWorldY(data.at("worldY"));
         this->setTurn(data.at("turn"));
         this->setOrganisms(std::vector<Organism *>());
 
         for (const auto &organism: data.at("organisms")) {
-            Organism* newOrganism = Organism::deserialize(&organism, this);
+            Organism *newOrganism = Organism::deserialize(&organism, this);
             this->addOrganism(newOrganism);
         }
+        my_json.close();
     }
 }
 

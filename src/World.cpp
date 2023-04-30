@@ -42,6 +42,11 @@ World::World(const int worldX, const int worldY) {
     this->setWorldY(worldY);
 }
 
+World::~World() {
+    for (auto organism : this->organisms)
+        delete organism;
+}
+
 int World::getWorldX() const { return this->worldX; }
 
 void World::setWorldX(const int newWorldX) { this->worldX = newWorldX; }
@@ -111,7 +116,7 @@ void World::readWorld(const std::string &fileName) {
         this->setOrganisms(std::vector<Organism *>());
 
         for (const auto &organism: data.at("organisms")) {
-            Organism* newOrganism = Organism::deserialize(&organism);
+            Organism* newOrganism = Organism::deserialize(&organism, this);
             this->addOrganism(newOrganism);
         }
     }

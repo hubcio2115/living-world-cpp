@@ -24,6 +24,8 @@ public:
 
     World() : World(6, 6) {};
 
+    ~World();
+
     [[nodiscard]] int getWorldX() const;
 
     void setWorldX(int newWorldX);

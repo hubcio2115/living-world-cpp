@@ -53,7 +53,7 @@ public:
 
     [[nodiscard]] virtual std::string toString();
 
-    virtual void move(int dx, int dy);
+    virtual void move(int dx, int dy) = 0;
 
     Organism &operator=(const Organism *);
 

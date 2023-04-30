@@ -61,8 +61,6 @@ std::string Organism::toString() {
     return to_string(this->serialize());
 }
 
-void Organism::move(const int dx, const int dy) { this->getPosition().move(dx, dy); }
-
 Organism &Organism::operator=(const Organism *) { return *this; }
 
 bool Organism::isReproducible() const {

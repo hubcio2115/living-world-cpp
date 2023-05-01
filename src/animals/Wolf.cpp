@@ -3,4 +3,4 @@
 //
 #include "Wolf.h"
 
-Wolf::Wolf(Position position, World *world) : Animal(OrganismInitParams{6, 5, 15, 12, "W"}, position, world) {}
+Wolf::Wolf(Position position) : Animal(OrganismInitParams{6, 5, 15, 12, &position, "W"}) {}

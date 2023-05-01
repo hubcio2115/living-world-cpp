@@ -3,4 +3,4 @@
 //
 #include "Sheep.h"
 
-Sheep::Sheep(Position position, World *world) : Animal(OrganismInitParams{3, 3, 10, 6, "S"}, position, world) {}
+Sheep::Sheep(Position position) : Animal(OrganismInitParams{3, 3, 10, 6, &position, "S"}) {}

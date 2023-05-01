@@ -5,7 +5,7 @@
 
 class Wolf : public Animal {
 public:
-    explicit Wolf(Position position, World *world);
+    explicit Wolf(Position position);
 
 };
 

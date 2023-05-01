@@ -4,7 +4,7 @@
 
 class Animal : public Organism {
 protected:
-    Animal(const OrganismInitParams &organism, Position position, World *world);
+    Animal(const OrganismInitParams &organism);
 
 public:
     void moveTo(Position *position) override;

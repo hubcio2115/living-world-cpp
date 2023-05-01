@@ -7,8 +7,6 @@
 
 using json = nlohmann::json;
 
-class World;
-
 class Organism {
 private:
     int power;
@@ -17,10 +15,9 @@ private:
     int liveLength;
     int powerToReproduce;
     std::string species;
-    World *world;
 
 protected:
-    Organism(const OrganismInitParams &organism, Position position, World *world);
+    Organism(const OrganismInitParams &organism);
 
     explicit Organism(const Organism *organism);
 
@@ -61,7 +58,7 @@ public:
 
     [[nodiscard]] virtual json serialize() const;
 
-    static Organism *deserialize(const json *organism, World *world);
+    static Organism *deserialize(const json *organism);
 
-    [[nodiscard]] static Organism *createOrganism(char species, Position position, World *world);
+    [[nodiscard]] static Organism *createOrganism(char species, Position position);
 };

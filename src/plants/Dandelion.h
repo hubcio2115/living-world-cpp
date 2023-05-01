@@ -5,7 +5,7 @@
 
 class Dandelion : public Plant {
 public:
-    explicit Dandelion(Position position, World *world);
+    explicit Dandelion(Position position);
 
 };
 

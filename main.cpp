@@ -18,8 +18,8 @@ int main() {
 //     std::cout << p2.toString() << std::endl;
 
     // Plant & Animal
-    auto grass = Organism::createOrganism('G', p2, nullptr);
-    auto sheep = Organism::createOrganism('S', p3, nullptr);
+    auto grass = Organism::createOrganism('G', p2);
+    auto sheep = Organism::createOrganism('S', p3);
 
     std::cout << grass->toString() << std::endl;
     std::cout << sheep->toString() << std::endl;
@@ -36,14 +36,14 @@ int main() {
     // World test
     World world(6, 6);
     Position pos1(4, 5);
-    auto grass1 = Organism::createOrganism('G', pos1, &world);
+    auto grass1 = Organism::createOrganism('G', pos1);
     Position pos2(5, 4);
-    auto dandelion2 = Organism::createOrganism('D', pos2, &world);
+    auto dandelion2 = Organism::createOrganism('D', pos2);
 
     Position pos3(3, 2);
-    auto sheep1 = Organism::createOrganism('S', pos3, &world);
+    auto sheep1 = Organism::createOrganism('S', pos3);
     Position pos4(2, 3);
-    auto sheep2 = Organism::createOrganism('S', pos4, &world);
+    auto sheep2 = Organism::createOrganism('S', pos4);
 
     world.addOrganism(grass1);
     world.addOrganism(dandelion2);

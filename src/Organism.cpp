@@ -5,14 +5,13 @@
 #include "plants/Dandelion.h"
 #include "plants/Toadstool.h"
 
-Organism::Organism(const OrganismInitParams &organism, Position position, World *world) {
+Organism::Organism(const OrganismInitParams &organism) {
     this->setPower(organism.power);
     this->setInitiative(organism.initiative);
-    this->setPosition(position);
+    this->setPosition(*organism.position);
     this->setLiveLength(organism.liveLength);
     this->setPowerToReproduce(organism.powerToReproduce);
     this->setSpecies(organism.species);
-    this->world = world;
 }
 
 Organism::Organism(const Organism *organism) {
@@ -22,7 +21,6 @@ Organism::Organism(const Organism *organism) {
     this->setLiveLength(organism->getLiveLength());
     this->setPowerToReproduce(organism->getPowerToReproduce());
     this->setSpecies(organism->getSpecies());
-    this->world = organism->world;
 }
 
 int Organism::getPower() const { return this->power; }
@@ -81,14 +79,14 @@ json Organism::serialize() const {
     };
 }
 
-Organism *Organism::deserialize(const json *organism, World *world) {
+Organism *Organism::deserialize(const json *organism) {
     std::string species = organism->at("species");
     const char *cstr = species.c_str();
     char buffer[2];
     std::strcpy(buffer, cstr);
 
     Position position(organism->at("position").at("posX"), organism->at("position").at("posY"));
-    Organism *newOrganism = Organism::createOrganism(buffer[0], position, world);
+    Organism *newOrganism = Organism::createOrganism(buffer[0], position);
 
     newOrganism->setPower(organism->at("power"));
     newOrganism->setInitiative(organism->at("initiative"));
@@ -98,23 +96,23 @@ Organism *Organism::deserialize(const json *organism, World *world) {
     return newOrganism;
 }
 
-Organism *Organism::createOrganism(const char species, Position position, World *world) {
+Organism *Organism::createOrganism(const char species, Position position) {
     Organism *newOrganism;
     switch (species) {
         case 'W':
-            newOrganism = new Wolf(position, world);
+            newOrganism = new Wolf(position);
             break;
         case 'S':
-            newOrganism = new Sheep(position, world);
+            newOrganism = new Sheep(position);
             break;
         case 'G':
-            newOrganism = new Grass(position, world);
+            newOrganism = new Grass(position);
             break;
         case 'T':
-            newOrganism = new Toadstool(position, world);
+            newOrganism = new Toadstool(position);
             break;
         case 'D':
-            newOrganism = new Dandelion(position, world);
+            newOrganism = new Dandelion(position);
             break;
         default:
             throw std::runtime_error("No animal ha provided species signature!");

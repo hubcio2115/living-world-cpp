@@ -3,4 +3,4 @@
 //
 #include "Grass.h"
 
-Grass::Grass(Position position, World *world) : Plant(OrganismInitParams{0, 0, 6, 3, "G"}, position, world) {}
+Grass::Grass(Position position) : Plant(OrganismInitParams{0, 0, 6, 3, &position, "G"}) {}

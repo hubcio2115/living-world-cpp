@@ -8,14 +8,14 @@ using json = nlohmann::json;
 namespace sv = std::views;
 
 std::string World::getOrganismFromPosition(int x, int y) {
-    for (auto org: this->organisms)
-        if (org->getPosition().getX() == x && org->getPosition().getY() == y)
-            return org->getSpecies();
+    for (auto organism: this->organisms)
+        if (organism->getPosition().getX() == x && organism->getPosition().getY() == y)
+            return organism->getSpecies();
     return "";
 }
 
 bool World::isPositionOnWorld(int x, int y) const {
-    return (x >= 0 && y >= 0 && x < getWorldX() && y < getWorldY());
+    return (x >= 0 && y >= 0 && x < this->getWorldX() && y < this->getWorldY());
 }
 
 bool World::isPositionFree(Position position) {
@@ -31,8 +31,8 @@ std::vector<Position> World::getVectorOfFreePositionsAround(Position position) {
             if ((x != 0 || y != 0) && this->isPositionOnWorld(pos_x + x, pos_y + y))
                 result.emplace_back(pos_x + x, pos_y + y);
 
-    auto iter = remove_if(result.begin(), result.end(),
-                          [this](Position pos) { return !isPositionFree(pos); });
+    auto iter = std::remove_if(result.begin(), result.end(),
+                               [this](Position pos) { return !isPositionFree(pos); });
     result.erase(iter, result.end());
 
     return result;
@@ -76,7 +76,7 @@ void World::makeTurn() {
     int randomIndex;
 
     std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> dist(100);
+    std::uniform_int_distribution<int> dist(8);
 
     for (auto organism: this->organisms) {
         auto currentPosition = organism->getPosition();

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace sv = std::views;
+
 int main() {
     // Position
     Position p1;
@@ -56,7 +58,7 @@ int main() {
     // Tura 0
     std::cout << world.toString() << std::endl;
 
-    for (int i = 0; i < 10; i++) {
+    for (int i: sv::iota(0, 10)) {
         world.makeTurn();
         std::cout << world.toString() << std::endl;
 

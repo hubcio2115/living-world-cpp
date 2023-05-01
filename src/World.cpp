@@ -5,6 +5,7 @@
 #include <utility>
 
 using json = nlohmann::json;
+namespace sv = std::views;
 
 std::string World::getOrganismFromPosition(int x, int y) {
     for (auto org: this->organisms)
@@ -25,8 +26,8 @@ bool World::isPositionFree(Position position) {
 std::vector<Position> World::getVectorOfFreePositionsAround(Position position) {
     int pos_x = position.getX(), pos_y = position.getY();
     std::vector<Position> result;
-    for (int x = -1; x < 2; ++x)
-        for (int y = -1; y < 2; ++y)
+    for (int x: sv::iota(-1, 2))
+        for (int y: sv::iota(-1, 2))
             if ((x != 0 || y != 0) && this->isPositionOnWorld(pos_x + x, pos_y + y))
                 result.emplace_back(pos_x + x, pos_y + y);
 
@@ -141,8 +142,8 @@ std::string World::toString() {
     std::string result = "\nturn: " + std::to_string(getTurn()) + "\n";
     std::string spec;
 
-    for (int wY = 0; wY < getWorldY(); ++wY) {
-        for (int wX = 0; wX < getWorldX(); ++wX) {
+    for (int wY: sv::iota(0, this->getWorldY())) {
+        for (int wX: sv::iota(0, this->getWorldX())) {
             spec = getOrganismFromPosition(wX, wY);
             if (!spec.empty())
                 result += spec;

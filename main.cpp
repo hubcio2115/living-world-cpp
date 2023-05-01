@@ -56,21 +56,14 @@ int main() {
     // Tura 0
     std::cout << world.toString() << std::endl;
 
-    // Tura 1
-    world.makeTurn();
-    std::cout << world.toString() << std::endl;
+    for (int i = 0; i < 10; i++) {
+        world.makeTurn();
+        std::cout << world.toString() << std::endl;
 
-    // Tura 2
-    world.makeTurn();
-    std::cout << world.toString() << std::endl;
+        if (i == 5) world.writeWorld("world.json");
+    }
 
-    world.writeWorld("world.json");
-
-    // Tura 3
-    world.makeTurn();
-    std::cout << world.toString() << std::endl;
-
-    // powrot do Tury 2
+    // powrót do Tury 5
     world.readWorld("world.json");
     std::cout << world.toString() << std::endl;
 

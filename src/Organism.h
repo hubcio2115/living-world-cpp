@@ -15,9 +15,12 @@ private:
     int liveLength;
     int powerToReproduce;
     std::string species;
+    Organism *child;
+    int turnOfBirth;
+    std::vector<int> historyOfAncestors;
 
 protected:
-    Organism(const OrganismInitParams &organism);
+    explicit Organism(const OrganismInitParams &organism);
 
     explicit Organism(const Organism *organism);
 
@@ -46,11 +49,25 @@ public:
 
     [[nodiscard]] std::string getSpecies() const;
 
+    void setChild(Organism *newChild);
+
+    [[nodiscard]] Organism *getChild() const;
+
+    void setHistoryOfAncestors(std::vector<int> newHistory);
+
+    [[nodiscard]] std::vector<int> getHistoryOfAncestors() const;
+
     void setSpecies(const std::string &spec);
 
     [[nodiscard]] virtual std::string toString();
 
-    virtual void moveTo(Position *position) = 0;
+    void setTurnOfBirth(int turn);
+
+    [[nodiscard]] int getTurnOfBirth() const;
+
+    virtual void moveTo(Position *position, int turn) = 0;
+
+    virtual void die(int turn) = 0;
 
     Organism &operator=(const Organism *);
 

@@ -7,5 +7,7 @@ protected:
     Animal(const OrganismInitParams &organism);
 
 public:
-    void moveTo(Position *position) override;
+    void moveTo(Position *position, int turn) override;
+
+    void die(int turn) override;
 };

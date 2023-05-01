@@ -24,10 +24,10 @@ int main() {
     std::cout << grass->toString() << std::endl;
     std::cout << sheep->toString() << std::endl;
 
-    grass->moveTo(new Position(1, 2));
+    grass->moveTo(new Position(1, 2), 0);
     std::cout << grass->toString() << std::endl;
 
-    sheep->moveTo(new Position(1, 2));
+    sheep->moveTo(new Position(1, 2), 0);
     std::cout << sheep->toString() << std::endl;
 
     delete grass;
@@ -44,6 +44,9 @@ int main() {
     auto sheep1 = Organism::createOrganism('S', pos3);
     Position pos4(2, 3);
     auto sheep2 = Organism::createOrganism('S', pos4);
+
+    sheep1->setLiveLength(6);
+    sheep1->setChild(sheep2);
 
     world.addOrganism(grass1);
     world.addOrganism(dandelion2);

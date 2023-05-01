@@ -4,6 +4,7 @@
 #include "plants/Grass.h"
 #include "plants/Dandelion.h"
 #include "plants/Toadstool.h"
+#include <iostream>
 
 Organism::Organism(const OrganismInitParams &organism) {
     this->setPower(organism.power);
@@ -12,6 +13,8 @@ Organism::Organism(const OrganismInitParams &organism) {
     this->setLiveLength(organism.liveLength);
     this->setPowerToReproduce(organism.powerToReproduce);
     this->setSpecies(organism.species);
+    this->setTurnOfBirth(organism.turnOfBirth);
+    this->child = organism.child;
 }
 
 Organism::Organism(const Organism *organism) {
@@ -21,6 +24,9 @@ Organism::Organism(const Organism *organism) {
     this->setLiveLength(organism->getLiveLength());
     this->setPowerToReproduce(organism->getPowerToReproduce());
     this->setSpecies(organism->getSpecies());
+    this->setHistoryOfAncestors(organism->getHistoryOfAncestors());
+    this->setTurnOfBirth(organism->getTurnOfBirth());
+    this->child = organism->child;
 }
 
 int Organism::getPower() const { return this->power; }
@@ -55,6 +61,34 @@ std::string Organism::getSpecies() const { return this->species; }
 
 void Organism::setSpecies(const std::string &spec) { this->species = spec; }
 
+void Organism::setChild(Organism *newChild) {
+    auto history = newChild->getHistoryOfAncestors();
+    history.push_back(this->getTurnOfBirth());
+    newChild->setHistoryOfAncestors(history);
+
+    this->child = newChild;
+}
+
+Organism *Organism::getChild() const {
+    return this->child;
+}
+
+void Organism::setHistoryOfAncestors(std::vector<int> newHistory) {
+    this->historyOfAncestors = std::move(newHistory);
+}
+
+std::vector<int> Organism::getHistoryOfAncestors() const {
+    return this->historyOfAncestors;
+}
+
+void Organism::setTurnOfBirth(int turn) {
+    this->turnOfBirth = turn;
+}
+
+int Organism::getTurnOfBirth() const {
+    return this->turnOfBirth;
+}
+
 std::string Organism::toString() {
     return to_string(this->serialize());
 }
@@ -72,6 +106,9 @@ json Organism::serialize() const {
             {"liveLength",       this->getLiveLength()},
             {"powerToReproduce", this->getPowerToReproduce()},
             {"species",          this->getSpecies()},
+            {"historyOfAncestors", this->getHistoryOfAncestors()},
+            {"child",            this->getChild() != nullptr ? this->getChild()->serialize() : nullptr},
+            {"turnOfBirth", this->getTurnOfBirth()},
             {"position",         {
                                          {"posX", this->getPosition().getX()},
                                          {"posY", this->getPosition().getY()},
@@ -92,6 +129,13 @@ Organism *Organism::deserialize(const json *organism) {
     newOrganism->setInitiative(organism->at("initiative"));
     newOrganism->setLiveLength(organism->at("liveLength"));
     newOrganism->setPowerToReproduce(organism->at("powerToReproduce"));
+    newOrganism->setHistoryOfAncestors(organism->at("historyOfAncestors"));
+    newOrganism->setTurnOfBirth(organism->at("turnOfBirth"));
+
+    if (organism->at("child") != nullptr) {
+        Organism *child = Organism::deserialize(&organism->at("child"));
+        newOrganism->setChild(child);
+    }
 
     return newOrganism;
 }

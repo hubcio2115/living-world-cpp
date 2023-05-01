@@ -78,7 +78,8 @@ void World::makeTurn() {
     std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<int> dist(8);
 
-    for (auto organism: this->organisms) {
+    for (int i: sv::iota(0, (int) this->organisms.size())) {
+        auto organism = this->organisms[i];
         auto currentPosition = organism->getPosition();
         newPositions = getVectorOfFreePositionsAround(currentPosition);
 
@@ -88,7 +89,13 @@ void World::makeTurn() {
             randomIndex = dist(rng) % numberOfNewPositions;
             Position newPosition = newPositions[randomIndex];
 
-            organism->moveTo(&newPosition);
+            organism->moveTo(&newPosition, this->getTurn());
+        }
+
+        if (organism->getLiveLength() == 0) {
+            auto pointerToErase = this->organisms.begin() + i;
+            this->organisms.erase(pointerToErase);
+            delete organism;
         }
     }
 
@@ -103,7 +110,9 @@ void World::writeWorld(const std::string &fileName) {
                      {"turn",      this->getTurn()},
                      {"organisms", json::array()}};
 
-        for (auto organism: this->organisms) data["organisms"].push_back(organism->serialize());
+        for (auto organism: this->organisms)
+            data["organisms"].push_back(organism->serialize());
+
 
         my_json << data.dump(4) << std::endl;
         my_json.close();

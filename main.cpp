@@ -62,7 +62,7 @@ int main() {
         world.makeTurn();
         std::cout << world.toString() << std::endl;
 
-        if (i == 5) world.writeWorld("world.json");
+        if (i == 4) world.writeWorld("world.json");
     }
 
     // powrót do Tury 5

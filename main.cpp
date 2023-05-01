@@ -24,10 +24,10 @@ int main() {
     std::cout << grass->toString() << std::endl;
     std::cout << sheep->toString() << std::endl;
 
-    grass->move(3, 4);
+    grass->moveTo(new Position(1, 2));
     std::cout << grass->toString() << std::endl;
 
-    sheep->move(1, 2);
+    sheep->moveTo(new Position(1, 2));
     std::cout << sheep->toString() << std::endl;
 
     delete grass;

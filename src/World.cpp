@@ -85,19 +85,10 @@ void World::makeTurn() {
         numberOfNewPositions = (int) newPositions.size();
         if (numberOfNewPositions > 0) {
             bool wasMoveMade = false;
-            while (!wasMoveMade) {
-                randomIndex = dist(rng) % numberOfNewPositions;
-                int deltaX = currentPosition.getX() - newPositions[randomIndex].getX();
-                int deltaY = currentPosition.getY() - newPositions[randomIndex].getY();
+            randomIndex = dist(rng) % numberOfNewPositions;
+            Position newPosition = newPositions[randomIndex];
 
-                bool isMoveValid = currentPosition.getX() + deltaX <= this->getWorldX() &&
-                                   currentPosition.getY() + deltaY <= this->getWorldY();
-
-                if (isMoveValid) {
-                    organism->move(deltaX, deltaY);
-                    wasMoveMade = true;
-                }
-            }
+            organism->moveTo(&newPosition);
         }
     }
 

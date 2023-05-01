@@ -15,7 +15,7 @@ std::string World::getOrganismFromPosition(int x, int y) {
 }
 
 bool World::isPositionOnWorld(int x, int y) const {
-    return (x >= 0 && y >= 0 && x < this->getWorldX() && y < this->getWorldY());
+    return x >= 0 && y >= 0 && x < this->getWorldX() && y < this->getWorldY();
 }
 
 bool World::isPositionFree(Position position) {
@@ -122,7 +122,7 @@ void World::readWorld(const std::string &fileName) {
         this->setOrganisms(std::vector<Organism *>());
 
         for (const auto &organism: data.at("organisms")) {
-            Organism *newOrganism = Organism::deserialize(&organism, this);
+            Organism *newOrganism = Organism::deserialize(&organism);
             this->addOrganism(newOrganism);
         }
         my_json.close();
@@ -136,10 +136,9 @@ std::string World::toString() {
     for (int wY: sv::iota(0, this->getWorldY())) {
         for (int wX: sv::iota(0, this->getWorldX())) {
             spec = getOrganismFromPosition(wX, wY);
-            if (!spec.empty())
-                result += spec;
-            else
-                result += this->separator;
+            !spec.empty() ?
+                    result += spec :
+                    result += this->separator;
         }
         result += "\n";
     }
